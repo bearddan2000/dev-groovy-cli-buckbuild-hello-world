@@ -1,0 +1,23 @@
+groovy_library (
+    name = 'BuckApp-groovy-lib',
+    srcs = glob(['src/**/*.groovy']),
+    source = '8',
+    target = '8',
+)
+java_library (
+    name = 'BuckApp-java-lib',
+    srcs = glob(['src/**/*.java']),
+    source = '8',
+    target = '8',
+)
+
+java_binary (
+    name = 'BuckApp',
+    main_class = 'example.Main',
+    deps = [
+      ':BuckApp-groovy-lib',
+      ':BuckApp-java-lib',
+    ],
+    visibility = ['//visibility:public'],
+)
+

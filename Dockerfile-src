@@ -1,0 +1,33 @@
+FROM ubuntu:22.04
+
+WORKDIR /workspace
+
+RUN apt update
+
+# REGION install buck2
+# Takes over 5 mins to install
+
+RUN apt install -y build-essential \
+    curl gcc git make
+
+# We smash this into a single
+# RUN b/c of how docker does layers.
+# Having these commands on seperate
+# RUNs does not allow knowledge 
+# of rustup or cargo.
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o /workspace/rustup.sh \
+    && chmod +x /workspace/rustup.sh \
+    && ./rustup.sh -y \
+    && . "$HOME/.cargo/env" \
+    && rustc -Vv \
+    && rustup install nightly-2023-05-28 \
+    && cargo +nightly-2023-05-28 install --git https://github.com/facebook/buck2.git buck2
+
+# END REGION
+
+RUN apt install -y groovy
+
+COPY bin .
+
+# CMD "buck2 run :"

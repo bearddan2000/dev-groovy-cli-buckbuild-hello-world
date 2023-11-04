@@ -1,0 +1,12 @@
+[repositories]
+root = .
+
+[groovy]
+src_roots = groovy, src, main
+source_level = 8
+target_level = 8
+
+[java]
+src_roots = java, src, main
+source_level = 8
+target_level = 8
